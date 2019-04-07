@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="chat_cont">
+        <div class="chat_headding"></div>
+        <div class = "chat_logs">
+            asdf
+        </div>
+
+    </div>
+
+    <form action="" method="post" id="sendForm" class="text_cont">
+ 
+        <div class="input-group">
+            <input type="hidden" name="socketId">
+            <input type="text" name="message" class="form-control" placeholder="대화내용을 입력해주세요.">
+            <span class="input-group-btn">
+                <button class="btn btn-primary">작성하기</button>
+            </span>
+        </div><!-- /input-group -->
+
+    </form>  
+</body>
+</html>
+
+
+<style>
+.chat_cont{
+    background-color: lightslategrey;
+    width: 50%;
+    margin-left: 25%;
+    margin-top:20%;
+    height: 30%;
+
+}
+.chat_logs{
+    background-color: blanchedalmond;
+
+}
+
+.text_cont{
+    background-color: lightslategrey;
+    width: 50%;
+    margin-left: 25%;
+    margin-top:5%;
+    height: 30%;    
+}
+.chat_headding{
+    
+}
+
+</style>
+<script>
+    (function(){
+        var socket = io();
+        
+        socket.on('server message', function(data){
+            $('#chatBody').append('<li>' + data + '</li>');
+        });
+        
+        $(document).ready(function() {
+            $('#sendForm').submit(function(){
+                var $massage = $('#sendForm input[name=message]');
+                socket.emit('client message', { message : $massage.val()});
+                $massage.val('');
+                return false;
+            });
+        });
+        
+    })();
+</script>
